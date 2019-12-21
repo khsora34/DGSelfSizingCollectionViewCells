@@ -12,7 +12,7 @@ private let reuseIdentifier = "Cell"
 
 extension UIViewController {
     func reloadCollectionViewWithFontSizeChanges(_ collectionView: UICollectionView) {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange,
+        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification,
             object: nil,
             queue: OperationQueue.main) { (notification) -> Void in
                 collectionView.reloadData()
@@ -84,6 +84,20 @@ class CollectionViewController: UICollectionViewController {
             cell.isHeightCalculated = false
             cell.label.text = generatedStrings[indexPath.item]
             return cell
+        }
+    }
+    override func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        if generatedStrings.count > 0 {
+            let string = generatedStrings.remove(at: sourceIndexPath.item)
+            generatedStrings.insert(string, at: destinationIndexPath.item)
+        }
+        if generatedSizes.count > 0 {
+            let size = generatedSizes.remove(at: sourceIndexPath.item)
+            generatedSizes.insert(size, at: destinationIndexPath.item)
         }
     }
 }

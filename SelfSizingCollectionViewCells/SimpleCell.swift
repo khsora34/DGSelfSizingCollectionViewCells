@@ -11,12 +11,12 @@ import UIKit
 extension UILabel {
     
     func useSystemFont() {
-        self.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        self.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
     }
     
     func monitorFontSizeChanges() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil, queue: OperationQueue.main) {[weak self] (_) -> Void in
-            self?.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: OperationQueue.main) {[weak self] (_) -> Void in
+            self?.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
         }
     }
 }
@@ -60,14 +60,14 @@ class SimpleCell: UICollectionViewCell {
         label.useSystemFont()
         label.textAlignment = .right
         super.init(frame: frame)
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil, queue: OperationQueue.main) {[weak self] (_) -> Void in
+        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: OperationQueue.main) {[weak self] (_) -> Void in
             self?.label.useSystemFont()
             self?.isHeightCalculated = false
         }
         contentView.addSubview(label)
         let views = ["label" : label]
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[label(<=100)]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[label(100)]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[label(<=100)]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[label(100)]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views))
         
         contentView.backgroundColor = .white
     }
